@@ -1,0 +1,135 @@
+/* Location Autocomplete Styling */
+.location-autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.location-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.6rem;
+}
+
+.location-input-container {
+  position: relative;
+}
+
+.loading-spinner {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e8eaed;
+  border-top-color: #ffc107;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.location-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border: 2px solid #e8eaed;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  max-height: 280px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+.location-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.location-result-item:hover {
+  background: #f8f9fa;
+  transform: translateX(4px);
+}
+
+.location-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.location-result-item span {
+  flex: 1;
+  font-weight: 500;
+}
+
+/* Scrollbar styling */
+.location-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.location-results::-webkit-scrollbar-track {
+  background: #f5f7fa;
+  border-radius: 10px;
+}
+
+.location-results::-webkit-scrollbar-thumb {
+  background: #d0d3d7;
+  border-radius: 10px;
+}
+
+.location-results::-webkit-scrollbar-thumb:hover {
+  background: #b0b3b7;
+}
+
+/* Map button */
+.map-button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffc107;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #000;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.2);
+  z-index: 10;
+}
+
+.map-button:hover {
+  background: #ffd451;
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+}
+
+.map-button:active {
+  transform: translateY(-50%) scale(0.98);
+}

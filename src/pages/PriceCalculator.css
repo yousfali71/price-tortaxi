@@ -1,0 +1,9 @@
+/* Price Calculator Page - Main content */
+.price-calculator-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
