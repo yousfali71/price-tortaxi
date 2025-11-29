@@ -33,10 +33,10 @@ export const companies = {
   },
   kurir: {
     id: "kurir",
-    displayName: "Kurir Taxi",
+    displayName: "Taxibil Lerum",
     accentColor: "#e74c3c",
     logoSrc: kurirLogo,
-    description: "Kurir Taxi - Fast and reliable",
+    description: "Taxibil Lerum - Fast and reliable",
   },
   click: {
     id: "click",

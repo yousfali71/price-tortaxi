@@ -20,6 +20,7 @@ const translations = {
     carType: "Car type",
     carTypeNormal: "Normal (up to 4 passengers)",
     carTypeBig: "Big (more passengers)",
+    useMyLocation: "Use my location",
     pickupLocation: "Pickup Location",
     dropoffLocation: "Dropoff Location",
     pickupPlaceholder: "Enter pickup address...",
@@ -55,6 +56,7 @@ const translations = {
     carType: "Bilstyp",
     carTypeNormal: "Normal (upp till 4 passagerare)",
     carTypeBig: "Stor (fler passagerare)",
+    useMyLocation: "Använd min plats",
     pickupLocation: "Upphämtningsplats",
     dropoffLocation: "Avlämningsplats",
     pickupPlaceholder: "Ange upphämtningsadress...",
@@ -127,6 +129,30 @@ const PriceCalculatorModal = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleUseMyLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setPickupCoords({ lat, lng });
+        setPickupText(
+          `Current location (${lat.toFixed(4)}, ${lng.toFixed(4)})`
+        );
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        alert(
+          "Unable to retrieve your location. Please enable location access."
+        );
+      }
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -286,6 +312,8 @@ const PriceCalculatorModal = () => {
             }}
             onMapClick={() => openMapModal("pickup")}
             placeholder={t.pickupPlaceholder}
+            onGpsClick={handleUseMyLocation}
+            gpsButtonText={t.useMyLocation}
           />
         </div>
 
