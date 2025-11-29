@@ -8,6 +8,7 @@ const LocationAutocomplete = ({
   onMapClick,
   onGpsClick,
   gpsButtonText,
+  gpsLoading,
   placeholder = "Search location...",
   label,
 }) => {
@@ -84,56 +85,61 @@ const LocationAutocomplete = ({
   return (
     <div className="location-autocomplete-wrapper" ref={wrapperRef}>
       {label && <label className="location-label">{label}</label>}
-      <div className="location-input-container">
-        <input
-          type="text"
-          value={value}
-          onChange={handleInput}
-          placeholder={placeholder}
-          className="form-control-modal"
-          autoComplete="off"
-          style={{
-            paddingRight:
-              onGpsClick && onMapClick ? "140px" : onMapClick ? "90px" : "40px",
-          }}
-        />
-        {loading && (
-          <div className="loading-spinner">
-            <div className="spinner"></div>
-          </div>
-        )}
-        {onGpsClick && !loading && (
-          <button
-            type="button"
-            className="gps-button-location"
-            onClick={onGpsClick}
-            title={gpsButtonText || "Use my location"}
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+      <div className="location-input-row">
+        <div className="location-input-container">
+          <input
+            type="text"
+            value={value}
+            onChange={handleInput}
+            placeholder={placeholder}
+            className="form-control-modal"
+            autoComplete="off"
+          />
+          {loading && (
+            <div className="loading-spinner">
+              <div className="spinner"></div>
+            </div>
+          )}
+        </div>
+        <div className="location-buttons">
+          {onGpsClick && !loading && (
+            <button
+              type="button"
+              className={`gps-button-location ${gpsLoading ? "loading" : ""}`}
+              onClick={onGpsClick}
+              disabled={gpsLoading}
+              title={gpsButtonText || "Use my location"}
             >
-              <circle cx="12" cy="12" r="10" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-          </button>
-        )}
-        {onMapClick && !loading && (
-          <button
-            type="button"
-            className="map-button"
-            onClick={onMapClick}
-            title="Select on map"
-          >
-            🗺️
-          </button>
-        )}
+              {gpsLoading ? (
+                <div className="gps-spinner"></div>
+              ) : (
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </button>
+          )}
+          {onMapClick && !loading && (
+            <button
+              type="button"
+              className="map-button"
+              onClick={onMapClick}
+              title="Select on map"
+            >
+              🗺️
+            </button>
+          )}
+        </div>
       </div>
 
       {results.length > 0 && (

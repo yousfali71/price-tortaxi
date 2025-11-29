@@ -14,8 +14,15 @@
   margin-bottom: 0.6rem;
 }
 
+.location-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
 .location-input-container {
   position: relative;
+  flex: 1;
 }
 
 .loading-spinner {
@@ -43,6 +50,100 @@
   }
 }
 
+/* Location buttons container */
+.location-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+/* GPS button */
+.gps-button-location {
+  background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 0 14px;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(67, 160, 71, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+}
+
+.gps-button-location:hover:not(:disabled) {
+  background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.35);
+}
+
+.gps-button-location:active:not(:disabled) {
+  transform: translateY(0px);
+  box-shadow: 0 1px 4px rgba(67, 160, 71, 0.3);
+}
+
+.gps-button-location:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.gps-button-location.loading {
+  background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+}
+
+.gps-button-location svg {
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.gps-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: gps-spin 0.8s linear infinite;
+}
+
+@keyframes gps-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Map button */
+.map-button {
+  background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 0 14px;
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: #000;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  filter: brightness(1);
+}
+
+.map-button:hover {
+  background: linear-gradient(135deg, #ffcd38 0%, #ffe082 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.35);
+  filter: brightness(1.05);
+}
+
+.map-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 1px 4px rgba(255, 193, 7, 0.3);
+}
+
+/* Location results dropdown */
 .location-results {
   position: absolute;
   top: calc(100% + 4px);
@@ -108,62 +209,91 @@
 
 /* GPS button */
 .gps-button-location {
-  position: absolute;
-  right: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #4caf50;
+  background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
   border: none;
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: 10px;
+  padding: 0 14px;
   cursor: pointer;
   color: #fff;
-  transition: all 0.2s;
-  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
-  z-index: 10;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(67, 160, 71, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 48px;
 }
 
-.gps-button-location:hover {
-  background: #66bb6a;
-  transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+.gps-button-location:hover:not(:disabled) {
+  background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.35);
 }
 
-.gps-button-location:active {
-  transform: translateY(-50%) scale(0.98);
+.gps-button-location:active:not(:disabled) {
+  transform: translateY(0px);
+  box-shadow: 0 1px 4px rgba(67, 160, 71, 0.3);
+}
+
+.gps-button-location:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.gps-button-location.loading {
+  background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
 }
 
 .gps-button-location svg {
   display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.gps-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: gps-spin 0.8s linear infinite;
+}
+
+@keyframes gps-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gps-button-location svg {
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 /* Map button */
 .map-button {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #ffc107;
+  background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
   border: none;
-  border-radius: 8px;
-  padding: 6px 10px;
+  border-radius: 10px;
+  padding: 0 14px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: #000;
-  transition: all 0.2s;
-  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.2);
-  z-index: 10;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  filter: brightness(1);
 }
 
 .map-button:hover {
-  background: #ffd451;
-  transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+  background: linear-gradient(135deg, #ffcd38 0%, #ffe082 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.35);
+  filter: brightness(1.05);
 }
 
 .map-button:active {
-  transform: translateY(-50%) scale(0.98);
+  transform: translateY(0px);
+  box-shadow: 0 1px 4px rgba(255, 193, 7, 0.3);
 }

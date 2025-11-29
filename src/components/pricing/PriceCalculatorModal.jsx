@@ -100,6 +100,7 @@ const PriceCalculatorModal = () => {
   const [pickupCoords, setPickupCoords] = useState(null);
   const [dropoffText, setDropoffText] = useState("");
   const [dropoffCoords, setDropoffCoords] = useState(null);
+  const [loadingGPS, setLoadingGPS] = useState(false);
 
   // Map modal states
   const [showMapModal, setShowMapModal] = useState(false);
@@ -131,26 +132,68 @@ const PriceCalculatorModal = () => {
     }));
   };
 
-  const handleUseMyLocation = () => {
+  const handleUseMyLocation = async () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
+      alert(
+        lang === "SV"
+          ? "Geolokalisering stöds inte av din webbläsare"
+          : "Geolocation is not supported by your browser"
+      );
       return;
     }
 
+    setLoadingGPS(true);
+
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setPickupCoords({ lat, lng });
-        setPickupText(
-          `Current location (${lat.toFixed(4)}, ${lng.toFixed(4)})`
-        );
+
+        // Try to get address from coordinates using Mapbox reverse geocoding
+        try {
+          const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+          const response = await fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MAPBOX_TOKEN}&language=${
+              lang === "SV" ? "sv" : "en"
+            }`
+          );
+          const data = await response.json();
+
+          if (data.features && data.features.length > 0) {
+            setPickupText(data.features[0].place_name);
+          } else {
+            setPickupText(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+          }
+        } catch (error) {
+          console.error("Reverse geocoding error:", error);
+          setPickupText(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+        } finally {
+          setLoadingGPS(false);
+        }
       },
       (error) => {
         console.error("Error getting location:", error);
-        alert(
-          "Unable to retrieve your location. Please enable location access."
-        );
+        setLoadingGPS(false);
+
+        let errorMessage = "Unable to retrieve your location.";
+        if (lang === "SV") {
+          errorMessage = "Kunde inte hämta din plats.";
+        }
+
+        if (error.code === 1) {
+          errorMessage +=
+            lang === "SV"
+              ? " Tillåt platstjänster i webbläsaren."
+              : " Please enable location access.";
+        }
+
+        alert(errorMessage);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   };
@@ -314,6 +357,7 @@ const PriceCalculatorModal = () => {
             placeholder={t.pickupPlaceholder}
             onGpsClick={handleUseMyLocation}
             gpsButtonText={t.useMyLocation}
+            gpsLoading={loadingGPS}
           />
         </div>
 
