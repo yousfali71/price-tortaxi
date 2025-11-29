@@ -9,17 +9,17 @@ import CustomSelect from "./CustomSelect.jsx";
 import { companies } from "../../features/pricing/companiesConfig.js";
 import { calculatePrice } from "../../features/pricing/calculatePrice.js";
 import { getRouteDetails } from "../../utils/mapboxHelpers.js";
+import { TOR_TAXI_PHONE, TOR_TAXI_URL } from "../../constants/config.js";
 import "./PriceCalculatorModal.css";
 
 const translations = {
   EN: {
     pageTitle: "Taxi Price Calculator",
+    brandingNote: `Powered by TorTaxi.se – For booking or questions call ${TOR_TAXI_PHONE}.`,
     companySubtitle: "Choose your company",
-    headline: "Know the price of your trip",
     carType: "Car type",
     carTypeNormal: "Normal (up to 4 passengers)",
     carTypeBig: "Big (more passengers)",
-    dateTime: "Date & time",
     pickupLocation: "Pickup Location",
     dropoffLocation: "Dropoff Location",
     pickupPlaceholder: "Enter pickup address...",
@@ -36,12 +36,13 @@ const translations = {
     distanceLabel: "Distance",
     total: "Total",
     disclaimer: "This is an estimated price. Final fare may vary.",
+    goToTorTaxi: "Go to TorTaxi.se to book",
     infoTitle:
       "Price Calculator – Full transparency for both driver and customer",
     infoIntro: "Our pricing system is based on three main components:",
-    infoComponent1: "1. Fixed start fee (Base Fare)",
-    infoComponent2: "2. Price per kilometer (Per-km Rate)",
-    infoComponent3: "3. Hourly rate (Hourly Rate)",
+    infoComponent1: "Fixed start fee (Base Fare)",
+    infoComponent2: "Price per kilometer (Per-km Rate)",
+    infoComponent3: "Hourly rate (Hourly Rate)",
     infoDescription:
       "This tool calculates the expected cost of the trip with high accuracy, so that both driver and customer can see the price in advance and ensure that it is fair and reasonable.",
     infoNote:
@@ -49,12 +50,11 @@ const translations = {
   },
   SV: {
     pageTitle: "Taxi Prisberäkning",
+    brandingNote: `Drivs av TorTaxi.se – För bokning eller frågor ring ${TOR_TAXI_PHONE}.`,
     companySubtitle: "Välj ditt företag",
-    headline: "Kolla priset på din resa",
     carType: "Bilstyp",
     carTypeNormal: "Normal (upp till 4 passagerare)",
     carTypeBig: "Stor (fler passagerare)",
-    dateTime: "Datum och tid",
     pickupLocation: "Upphämtningsplats",
     dropoffLocation: "Avlämningsplats",
     pickupPlaceholder: "Ange upphämtningsadress...",
@@ -71,11 +71,12 @@ const translations = {
     distanceLabel: "Sträcka",
     total: "Totalt",
     disclaimer: "Detta är ett uppskattat pris. Slutgiltigt pris kan variera.",
+    goToTorTaxi: "Gå till TorTaxi.se för att boka",
     infoTitle: "Prisberäknare – Full transparens för både förare och kund",
     infoIntro: "Vårt prissystem bygger på tre huvudkomponenter:",
-    infoComponent1: "1. Fast startavgift (Base Fare)",
-    infoComponent2: "2. Kilometerpris (Per-km Rate)",
-    infoComponent3: "3. Timpris (Hourly Rate)",
+    infoComponent1: "Fast startavgift (Base Fare)",
+    infoComponent2: "Kilometerpris (Per-km Rate)",
+    infoComponent3: "Timpris (Hourly Rate)",
     infoDescription:
       "Detta verktyg beräknar den förväntade kostnaden för resan med hög noggrannhet, så att både förare och kund kan se priset i förväg och försäkra sig om att det är rättvist och rimligt.",
     infoNote:
@@ -87,15 +88,15 @@ const translations = {
  * PriceCalculatorModal - Main calculator modal with tabs
  */
 const PriceCalculatorModal = () => {
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("SV"); // Default to Swedish
   const [activeCompanyId, setActiveCompanyId] = useState("tor");
   const [result, setResult] = useState(null);
   const [calculating, setCalculating] = useState(false);
 
   // Location states
   const [pickupText, setPickupText] = useState("");
-  const [dropoffText, setDropoffText] = useState("");
   const [pickupCoords, setPickupCoords] = useState(null);
+  const [dropoffText, setDropoffText] = useState("");
   const [dropoffCoords, setDropoffCoords] = useState(null);
 
   // Map modal states
@@ -106,20 +107,8 @@ const PriceCalculatorModal = () => {
   const [showResultModal, setShowResultModal] = useState(false);
   const [routeData, setRouteData] = useState(null);
 
-  // Get current datetime in the format required for datetime-local input
-  const getCurrentDateTime = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
-
   const [formData, setFormData] = useState({
     carType: "small",
-    datetime: getCurrentDateTime(),
     distanceKm: "",
     durationMinutes: "",
   });
@@ -179,7 +168,8 @@ const PriceCalculatorModal = () => {
         durationMinutes: duration.toString(),
       }));
 
-      const datetime = new Date(formData.datetime);
+      // Use current date/time in Sweden (local time assumed)
+      const datetime = new Date();
 
       const calculationResult = calculatePrice({
         companyId: activeCompanyId,
@@ -218,8 +208,15 @@ const PriceCalculatorModal = () => {
     setShowMapModal(true);
   };
 
+  const handleGoToTorTaxi = () => {
+    window.open(TOR_TAXI_URL, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="calculator-modal">
+      {/* Branding note */}
+      <div className="branding-note">{t.brandingNote}</div>
+
       {/* Top bar with title and language */}
       <div className="modal-top-bar">
         <h2 className="page-title">{t.pageTitle}</h2>
@@ -280,19 +277,6 @@ const PriceCalculatorModal = () => {
         </div>
 
         <div className="form-group-modal">
-          <label htmlFor="datetime">{t.dateTime}</label>
-          <input
-            type="datetime-local"
-            id="datetime"
-            name="datetime"
-            value={formData.datetime}
-            onChange={handleChange}
-            className="form-control-modal"
-            required
-          />
-        </div>
-
-        <div className="form-group-modal">
           <LocationAutocomplete
             label={t.pickupLocation}
             value={pickupText}
@@ -345,6 +329,24 @@ const PriceCalculatorModal = () => {
           {calculating ? t.calculating : t.calculate}
         </button>
       </form>
+
+      {/* Result summary */}
+      <ResultSummary
+        result={result}
+        translations={t}
+        accentColor={activeCompany.accentColor}
+      />
+
+      {/* Go to TorTaxi button */}
+      <div className="modal-footer">
+        <button
+          type="button"
+          className="btn-go-to-tortaxi"
+          onClick={handleGoToTorTaxi}
+        >
+          {t.goToTorTaxi}
+        </button>
+      </div>
 
       {/* Information section */}
       <div className="info-section">

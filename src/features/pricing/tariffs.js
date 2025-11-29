@@ -149,6 +149,29 @@ export const tariffs = {
       },
     ],
   },
+
+  click: {
+    small: [
+      {
+        type: "day",
+        from: "07:00",
+        to: "15:00",
+        base: 75,
+        hour: 836,
+        km: 18,
+        description: "Day tariff (07:00–15:00)",
+      },
+      {
+        type: "night",
+        from: "15:00",
+        to: "07:00",
+        base: 75,
+        hour: 1136,
+        km: 14,
+        description: "Night tariff (15:00–07:00)",
+      },
+    ],
+  },
 };
 
 export const getTariffs = (companyId, carType) => {
