@@ -114,6 +114,7 @@ const LocationAutocomplete = ({
                 <div className="gps-spinner"></div>
               ) : (
                 <svg
+                  className="gps-icon"
                   width="18"
                   height="18"
                   viewBox="0 0 24 24"
