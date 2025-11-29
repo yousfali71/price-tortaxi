@@ -26,10 +26,10 @@ export const companies = {
   },
   gtt: {
     id: "gtt",
-    displayName: "Kurrir Taxi",
+    displayName: "Kurir Taxi",
     accentColor: "#00c8ff",
     logoSrc: gttLogo,
-    description: "Kurrir Taxi - Your trusted taxi company",
+    description: "Kurir Taxi - Your trusted taxi company",
   },
   kurir: {
     id: "kurir",
